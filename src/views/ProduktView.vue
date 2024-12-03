@@ -49,10 +49,9 @@ const bookExit = async (index: number, quantityToExit: number) => {
   const produkt = produkte.value[index]
   if (quantityToExit > 0 && quantityToExit <= produkt.quantity) {
     try {
-      const response = await axios.put(`${apiUrl}/${produkt.id}`, {
-        quantity: quantityToExit,
-      })
-      // Produkt aktualisieren
+      // PUT-Anfrage an den Backend-Endpunkt zum Buchen des Warenausgangs
+      const response = await axios.put(`${apiUrl}/${produkt.id}/exit`, quantityToExit)
+      // Produkt nach dem Warenausgang aktualisieren
       produkte.value[index] = response.data
     } catch (error) {
       console.error('Fehler beim Buchen des Warenausgangs:', error)
@@ -184,5 +183,110 @@ onMounted(() => {
 </template>
 
 <style scoped>
-/* Behalte die bestehenden Styles bei */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+input, button {
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+button {
+  background-color: cadetblue;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:disabled {
+  background-color: gray;
+  cursor: not-allowed;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+th, td {
+  padding: 0.8rem;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+td {
+  text-align: right;
+}
+
+h1, h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.inventur {
+  margin-top: 2rem;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
+  margin-bottom: 2rem;
+  margin-left: 20px;
+}
+
+.delete-btn {
+  background-color: darkred;
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+.delete-btn:hover {
+  background-color: red;
+}
+
+.book-exit-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.quantity-input {
+  padding: 0.5rem;
+  font-size: 1rem;
+  width: 80px;
+}
+
+.book-exit-btn {
+  background-color: cadetblue;
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+.book-exit-btn:disabled {
+  background-color: gray;
+  cursor: not-allowed;
+}
 </style>
