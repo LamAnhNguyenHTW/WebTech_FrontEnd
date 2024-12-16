@@ -9,17 +9,29 @@ const inputData = ref({
   quantity: 1,
 })
 
-const apiUrl = 'https://webtech-backend-75x9.onrender.com/api/produkte'  // Backend-URL anpassen
+const baseUrl = import.meta.env.VITE_APP_BACKEND_BASE_URL;
+const apiUrl = baseUrl + '/api/produkte';
+
+
 
 // Produkte vom Backend laden
 const loadProducts = async () => {
   try {
     const response = await axios.get(apiUrl)
-    produkte.value = response.data
+
+    // Überprüfen, ob die Antwort ein Array ist
+    if (Array.isArray(response.data)) {
+      produkte.value = response.data
+    } else {
+      console.error('Erhaltene Daten sind kein Array:', response.data)
+      produkte.value = []  // Leeres Array setzen, um Fehler zu vermeiden
+    }
   } catch (error) {
     console.error('Fehler beim Abrufen der Produkte:', error)
+    produkte.value = []  // Leeres Array setzen, falls ein Fehler auftritt
   }
 }
+
 
 // Produkt hinzufügen
 const addProduct = async () => {
@@ -180,6 +192,9 @@ onMounted(() => {
       {{ produkte.reduce((total, produkt) => total + produkt.quantity, 0) }}
     </p>
   </div>
+  <p v-else>
+    Keine Produkte zum Berechnen verfügbar.
+  </p>
 </template>
 
 <style scoped>
