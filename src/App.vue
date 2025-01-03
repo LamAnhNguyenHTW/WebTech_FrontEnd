@@ -8,13 +8,15 @@ import { RouterLink, RouterView } from 'vue-router'
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/produkt">Produkt</RouterLink>
+        <RouterLink to="/warenbewegung">Warenbewegung</RouterLink>
+        <RouterLink to="/inventur">Inventur</RouterLink>
         <RouterLink to="/lieferant">Lieferant</RouterLink>
         <RouterLink to="/kunde">Kunde</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
       </nav>
     </div>
   </header>
   <RouterView />
+
 </template>
 
 <style scoped>
