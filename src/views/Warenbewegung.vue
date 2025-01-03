@@ -104,7 +104,7 @@ const deleteWarenbewegung = async (id: number) => {
   try {
     const response = await axios.delete(`${baseUrl}/api/warenbewegungen/${id}`);
     if (response.status === 204) {
-      loadWarenbewegungen();  // Neue Warenbewegungen laden
+      await loadWarenbewegungen();  // Neue Warenbewegungen laden
       alert('Warenbewegung erfolgreich gelöscht!');
     } else {
       alert('Fehler beim Löschen der Warenbewegung. Status: ' + response.status);
@@ -134,7 +134,6 @@ const bookIncoming = async () => {
     const response = await axios.put(
       `${apiUrl}/${selectedProduct.value.id}/entry?quantityToAdd=${quantity.value}&lieferantId=${selectedLieferant.value.id}`,
       {},
-      { headers: { 'Content-Type': 'application/json' } }
     );
 
     if (response.status === 200) {
@@ -207,15 +206,6 @@ const closeModal = () => {
   isModalOpen.value = false;
 };
 
-// Bestätigt die Auswahl
-const confirmSelection = () => {
-  if (isIncoming.value && selectedLieferant.value) {
-    alert(`Lieferant ${selectedLieferant.value.name} ausgewählt.`);
-  } else if (isOutgoing.value && selectedKunde.value) {
-    alert(`Kunde ${selectedKunde.value.name} ausgewählt.`);
-  }
-  closeModal();
-};
 
 console.log('Lieferanten:', lieferanten.value);
 console.log('Kunden:', kunden.value);
