@@ -161,7 +161,6 @@ const bookOutgoing = async () => {
     const response = await axios.put(
       `${apiUrl}/${selectedProduct.value.id}/exit?quantityToExit=${quantity.value}&kundeId=${selectedKunde.value.id}`,
       {},
-      { headers: { 'Content-Type': 'application/json' } }
     );
 
     if (response.status === 200) {
