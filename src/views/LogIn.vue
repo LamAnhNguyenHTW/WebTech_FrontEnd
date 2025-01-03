@@ -1,7 +1,7 @@
 <script>
-import axios from 'axios';
+import { defineComponent } from 'vue';
 
-export default {
+export default defineComponent({
   data() {
     return {
       username: '',
@@ -9,30 +9,28 @@ export default {
       showPassword: false, // Hinzufügen der fehlenden Datenvariable
       error: null,
     };
-  },
-  methods: {
+  },  methods: {
     togglePassword() {
       this.showPassword = !this.showPassword; // Umschalten des Passwortstatus
     },
-    async handleLogin() {
+/*    async handleLogin() {
       try {
         // Beispiel für eine API-Anfrage (auskommentiert)
-        /*
+        /!*
         const response = await axios.post('http://localhost:8080/api/auth/login', {
           username: this.username,
           password: this.password,
         });
         localStorage.setItem('token', response.data.token);
-        */
+        *!/
         this.$router.push('/produkt'); // Redirect to produkt page
       } catch (error) {
         this.error = 'Invalid username or password';
       }
-    },
+    },*/
   },
-};
+});
 </script>
-
 
 <template>
   <div class="login-container">

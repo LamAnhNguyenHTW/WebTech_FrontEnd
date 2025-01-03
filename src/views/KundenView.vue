@@ -121,8 +121,6 @@ onMounted(() => {
   loadCustomers()
 })
 
-/*import { GoogleMap, Marker } from '@fawmi/vue-google-maps';*/
-
 </script>
 
 <template>
@@ -270,15 +268,6 @@ onMounted(() => {
       </form>
     </div>
   </div>
-<!--  <div class="map-container">
-    <GoogleMap
-      :center="{ lat: 52.51097106933594, lng: 13.292622566223145 }"
-      :zoom="14"
-      style="height: 100%; width: 100%"
-    >
-      <Marker :position="{ lat: 52.51097106933594, lng: 13.292622566223145 }" />
-    </GoogleMap>
-  </div>-->
 
 </template>
 

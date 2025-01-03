@@ -109,7 +109,7 @@ const deleteWarenbewegung = async (id: number) => {
     } else {
       alert('Fehler beim Löschen der Warenbewegung. Status: ' + response.status);
     }
-  } catch (error) {
+  } catch (error:any) {
     console.error('Fehler beim Löschen der Warenbewegung:', error);
     alert('Fehler beim Löschen der Warenbewegung: ' + error.message);
   }
