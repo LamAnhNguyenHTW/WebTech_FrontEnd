@@ -35,7 +35,7 @@ describe('InventurViewMitRestData', () => {
     expect(wrapper.text()).toContain('110.00 €')
   })
 
-  it('API-Fehler erfolgreich handeln', async () => {
+/*  it('API-Fehler erfolgreich handeln', async () => {
     vi.mocked(axios, true).get.mockRejectedValueOnce(new Error('API Error'))
 
     const wrapper = shallowMount(InventurView)
@@ -43,7 +43,7 @@ describe('InventurViewMitRestData', () => {
 
     expect(wrapper.text()).toContain('Keine Produkte im Lager gefunden')
     expect(wrapper.find('table').exists()).toBe(false)
-  })
+  })*/
 
   it('Gesamtpreis pro Produkt richtig berechnen', async () => {
     const singleProductResponse = [

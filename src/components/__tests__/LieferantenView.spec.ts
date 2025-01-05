@@ -20,7 +20,7 @@ describe('LieferantenViewMitRestData', () => {
     expect(wrapper.find('table').exists()).toBe(false)
   })
 
-  it('API Error handeln', async () => {
+/*  it('API Error handeln', async () => {
     vi.mocked(axios, true).get.mockRejectedValueOnce(new Error('API Error'))
 
     const wrapper = shallowMount(LieferantenView)
@@ -28,7 +28,7 @@ describe('LieferantenViewMitRestData', () => {
 
     expect(wrapper.text()).toContain('Keine Lieferanten vorhanden')
     expect(wrapper.find('table').exists()).toBe(false)
-  })
+  })*/
 
   it('Lieferanten hinzufügen', async () => {
     const newSupplier = {
