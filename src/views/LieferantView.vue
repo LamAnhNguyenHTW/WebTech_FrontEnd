@@ -153,9 +153,15 @@ onMounted(() => {
 
       <!-- Rechte Spalte: Platz für Google Maps -->
       <div class="map-container">
-        <div class="map-placeholder">
-          Google Maps wird hier implementiert
-        </div>
+        <iframe
+          src="https://www.google.com/maps/d/u/0/embed?mid=1byVpWH5ksH7Up9-j7xOBvSxQ6y0jIik&ehbc=2E312F&noprof=1"
+          width="100%"
+          height="100%"
+          style="border:0;"
+          allow="fullscreen"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
       </div>
     </div>
 
@@ -308,21 +314,20 @@ onMounted(() => {
   flex-direction: column;
 }
 
+/* Anpassung der Google Map */
 .map-container {
   flex: 1;
   background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
   margin-top: 90px;
+  overflow: hidden;
 }
 
-.map-placeholder {
+.map-container iframe {
+  width: 100%;
   height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.2rem;
-  color: #666;
+  border: none;
 }
 
 .header {

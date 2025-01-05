@@ -160,9 +160,16 @@ onMounted(() => {
           </table>
         </div>
       </div>
-
       <div class="map-container">
-        <div class="map-placeholder">Google Maps wird hier implementiert</div>
+        <iframe
+          src="https://www.google.com/maps/d/u/0/embed?mid=1JMvwWlVl44QiEU12z7kJ8HTTOFXyM0E&ehbc=2E312F&noprof=1"
+          width="100%"
+          height="100%"
+          style="border:0;"
+          allow="fullscreen"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
       </div>
     </div>
   </div>
@@ -268,7 +275,6 @@ onMounted(() => {
       </form>
     </div>
   </div>
-
 </template>
 
 <style scoped>
@@ -297,21 +303,18 @@ onMounted(() => {
 
 /* Anpassung der Google Map */
 .map-container {
-  flex: 0.9; /* Kleinere Google Map */
+  flex: 1;
   background: white;
   border: 1px solid #ddd;
   border-radius: 4px;
   margin-top: 90px;
+  overflow: hidden;
 }
 
-
-.map-placeholder {
+.map-container iframe {
+  width: 100%;
   height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.2rem;
-  color: #666;
+  border: none;
 }
 
 .header {
