@@ -1,13 +1,14 @@
 <script setup lang="ts">
-// Script-Teil bleibt unverändert
 import { ref, onMounted } from 'vue'
 import axios from 'axios'
 
 const produkte = ref([] as Array<any>)
+const lieferanten = ref([] as Array<any>)
 const inputData = ref({
   name: '',
   price: 0,
   quantity: 1,
+  supplierId: null,
 })
 const editingProduct = ref<any>(null)
 const isAddModalVisible = ref(false)
@@ -15,6 +16,8 @@ const isEditModalVisible = ref(false)
 
 const baseUrl = import.meta.env.VITE_APP_BACKEND_BASE_URL;
 const apiUrl = baseUrl + '/api/produkte';
+const supplierApiUrl = baseUrl + '/api/lieferanten';
+const warenbewegungApiUrl = baseUrl + '/api/warenbewegungen';
 
 const loadProducts = async () => {
   try {
@@ -31,12 +34,28 @@ const loadProducts = async () => {
   }
 }
 
+const loadSuppliers = async () => {
+  try {
+    const response = await axios.get(supplierApiUrl)
+    if (Array.isArray(response.data)) {
+      lieferanten.value = response.data
+    } else {
+      console.error('Erhaltene Daten sind kein Array:', response.data)
+      lieferanten.value = []
+    }
+  } catch (error) {
+    console.error('Fehler beim Abrufen der Lieferanten:', error)
+    lieferanten.value = []
+  }
+}
+
 const addProduct = async () => {
-  if (inputData.value.name && inputData.value.price > 0) {
+  if (inputData.value.name && inputData.value.price > 0 && inputData.value.supplierId) {
     const newProduct = {
       name: inputData.value.name,
       price: inputData.value.price,
       quantity: inputData.value.quantity,
+      supplierId: inputData.value.supplierId,
     }
     try {
       const response = await axios.post(apiUrl, newProduct)
@@ -44,12 +63,36 @@ const addProduct = async () => {
       inputData.value.name = ''
       inputData.value.price = 0
       inputData.value.quantity = 1
+      inputData.value.supplierId = null
       isAddModalVisible.value = false
+
+      // Record the incoming movement with the current date as an array
+      const currentDate = new Date()
+      const dateArray = [
+        currentDate.getFullYear(),
+        currentDate.getMonth() + 1,
+        currentDate.getDate(),
+        currentDate.getHours(),
+        currentDate.getMinutes(),
+        currentDate.getSeconds()
+      ]
+
+      const supplier = lieferanten.value.find(l => l.id === newProduct.supplierId)
+
+      // Record the incoming movement with the current date
+      await axios.post(warenbewegungApiUrl, {
+        productId: response.data.id,
+        produktName: newProduct.name,
+        menge: newProduct.quantity,
+        typ: 'Eingang',
+        lieferant: supplier,
+        datum: dateArray, // Set the current date and time
+      })
     } catch (error) {
       console.error('Fehler beim Hinzufügen des Produkts:', error)
     }
   } else {
-    alert('Bitte gib einen Produktnamen und einen gültigen Preis an.')
+    alert('Bitte gib einen Produktnamen, einen gültigen Preis und einen Lieferanten an.')
   }
 }
 
@@ -66,7 +109,7 @@ const editProduct = async () => {
       produkte.value[index] = response.data
       isEditModalVisible.value = false
       editingProduct.value = null
-      inputData.value = { name: '', price: 0, quantity: 1 }
+      inputData.value = { name: '', price: 0, quantity: 1, supplierId: null }
     } catch (error) {
       console.error('Fehler beim Bearbeiten des Produkts:', error)
     }
@@ -100,6 +143,7 @@ const showAddModal = () => {
 
 onMounted(() => {
   loadProducts()
+  loadSuppliers()
 })
 </script>
 
@@ -177,6 +221,16 @@ onMounted(() => {
               min="1"
               step="1"
             />
+          </div>
+
+          <div class="form-group">
+            <label for="product-supplier">Lieferant:</label>
+            <select id="product-supplier" v-model="inputData.supplierId" required>
+              <option value="" disabled>Wähle einen Lieferanten</option>
+              <option v-for="lieferant in lieferanten" :key="lieferant.id" :value="lieferant.id">
+                {{ lieferant.name }}
+              </option>
+            </select>
           </div>
 
           <div class="button-group">
@@ -380,6 +434,41 @@ tbody tr:hover {
   margin-bottom: 8px;
   color: #2c3e50;
   font-weight: 500;
+}
+
+#product-supplier {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: #ffffff;
+  color: #2c3e50;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%232c3e50' d='M7 10l5 5 5-5H7z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 12px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#product-supplier:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 4px rgba(52, 152, 219, 0.5);
+}
+
+#product-supplier option {
+  color: #2c3e50;
+  background-color: #ffffff;
+}
+
+/* Responsive Anpassung */
+@media (max-width: 768px) {
+  #product-supplier {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
 }
 
 input {
